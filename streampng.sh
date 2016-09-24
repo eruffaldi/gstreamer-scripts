@@ -11,11 +11,12 @@
 CAPX11="ximagesrc use-damage=0"
 : ${CAP:="videotestsrc"}
 
-ENCODER="jpegenc"
-PACKER="rtpjpegpay pt=96"
+ENCODER="pngenc"
+PACKER="rtpgstpay config-interval=1"
 
-DECODER="jpegdec"
-UNPACKER="application/x-rtp,payload=96 ! rtpjpegdepay"
+DECODER="image/png ! pngdec"
+GSTCAPS=""
+UNPACKER="application/x-rtp,encoding-name=X-GST,clock-rate=90000,media=application,payload=96 ! rtpgstdepay"
 
 FINAL=autovideosink
 TARGET=127.0.0.1
