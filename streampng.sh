@@ -1,13 +1,8 @@
 #!/bin/bash
 #
-#Lossless h264 RTP streaming
-#Requires: GStreamer bad and ugly plugins
+# Stream PNG over custom RTP
 #
 #
-#Improvements for speed:
-# PRESET ultrafast
-# TUNE zerolatency
-
 CAPX11="ximagesrc use-damage=0"
 : ${CAP:="videotestsrc"}
 
