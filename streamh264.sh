@@ -13,6 +13,10 @@ CAP=videotestsrc
 ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
 SINK=udpsink
 SOURCE=udpsrc
+: ${RATE:="25"}
+: ${TARGET:="127.0.0.1"}
+: ${PORT:="9078"}
+
 while [ 1 -eq 1 ]
 do 
 	if [ $1 == "x11" ]; then
@@ -24,7 +28,7 @@ do
 		echo "rpi"
 		shift
 	elif [ $1 == "tcp" ]; then
-		echo "tcp"
+		echo "tcp - use it with SSH -L flag"
 		SINK=tcpserversink
 		SOURCE=tcpclientsrc
 		shift
@@ -33,7 +37,7 @@ do
 	fi
 done
 
-ADJUST="video/x-raw,format=BGRx,framerate=25/1 ! videoconvert"
+ADJUST="video/x-raw,format=BGRx,framerate=$RATE/1 ! videoconvert"
 
 PACKER="rtph264pay config-interval=1 pt=96"
 
@@ -41,8 +45,6 @@ DECODER="h264parse ! avdec_h264"
 UNPACKER="application/x-rtp ! rtph264depay"
 
 FINAL=autovideosink
-: ${TARGET:="127.0.0.1"}
-PORT=9078
 
 if [ $1 == 'cap' ]; then
 	OUTPUT="udpsink host=$TARGET port=$PORT"
