@@ -7,13 +7,24 @@
 #Improvements for speed:
 # PRESET ultrafast
 # TUNE zerolatency
-
-CAP="ximagesrc use-damage=0"
+#
+#NOTE: on rpi the x264enc becomes omxh264enc  
 CAP=videotestsrc
+ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
+
+while [ 1 -eq 1 ]
+do 
+	if [ $1 == "x11" ]; then
+		CAP="ximagesrc use-damage=0"
+	elif [ $1 == "rpi" ]; then
+		ENCODER="omxh264enc"
+	else
+		break
+	fi
+done
 
 ADJUST="video/x-raw,format=BGRx,framerate=25/1 ! videoconvert"
 
-ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
 PACKER="rtph264pay config-interval=1 pt=96"
 
 DECODER="h264parse ! avdec_h264"
