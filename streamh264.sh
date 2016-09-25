@@ -55,7 +55,7 @@ if [ $1 == 'cap' ]; then
 		w="gst-launch-1.0 $CAP ! tee name="local" ! queue ! autovideosink   local. ! $ENCODER ! $PACKER ! $OUTPUT"
 	else
 		echo "Capture"
-		w="gst-launch-1.0 $CAP ! $ENCODER ! $PACKER ! $OUTPUT"
+		w="gst-launch-1.0 $CAP ! $ADJUST ! $ENCODER ! $PACKER ! $OUTPUT"
 	fi
 	echo $w
 	$w
