@@ -3,7 +3,7 @@
 # Stream JPEG over RTP
 #
 ENCODER="jpegenc"
-PACKER="rtpjpegpay config-interval=1 pt=96"
+PACKER="rtpjpegpay pt=96"
 DECODER="jpegdec"
 UNPACKER="application/x-rtp,payload=96 ! rtpjpegdepay"
 : ${RATE:="25"}
