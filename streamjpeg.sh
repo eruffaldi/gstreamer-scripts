@@ -23,7 +23,8 @@ while [ 1 -eq 1 ]
 do 
 	if [ $1 == "x11" ]; then
 		CAP="ximagesrc use-damage=0 display-name=$CAPDISPLAY"
-		ADJUST="video/x-raw,framerate=$RATE/1 ! videoconvert"
+		# data rate and I420 for jpeg!
+		ADJUST="video/x-raw,framerate=$RATE/1 ! videoconvert ! video/x-raw,format=I420"
 		echo "x11"
 		shift
 	elif [ $1 == "tcp" ]; then
