@@ -18,13 +18,16 @@ do
 	if [ $1 == "x11" ]; then
 		CAP="ximagesrc use-damage=0"
 		echo "x11"
+		shift
 	elif [ $1 == "rpi" ]; then
 		ENCODER="omxh264enc"
 		echo "rpi"
+		shift
 	elif [ $1 == "tcp" ]; then
 		echo "tcp"
 		SINK=tcpserversink
 		SOURCE=tcpclientsrc
+		shift
 	else
 		break
 	fi
