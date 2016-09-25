@@ -12,8 +12,9 @@ ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
 PACKER="rtph264pay config-interval=1 pt=96"
 DECODER="h264parse ! avdec_h264"
 UNPACKER="application/x-rtp ! rtph264depay"
+: ${RATE:="25"}
 
-ADJUST="video/x-raw,format=BGRx,framerate=$RATE/1 ! videoconvert"
+ADJUST="video/x-raw,framerate=$RATE/1"
 
 CAP=videotestsrc
 FINAL=autovideosink

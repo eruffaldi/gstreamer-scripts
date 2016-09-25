@@ -7,7 +7,7 @@ PACKER="rtpjpegpay pt=96"
 DECODER="jpegdec"
 UNPACKER="application/x-rtp,payload=96 ! rtpjpegdepay"
 
-ADJUST="video/x-raw,format=BGRx,framerate=$RATE/1 ! videoconvert"
+ADJUST="video/x-raw,framerate=$RATE/1"
 
 CAP=videotestsrc
 FINAL=autovideosink
@@ -25,10 +25,6 @@ do
 		CAP="ximagesrc use-damage=0 display-name=$CAPDISPLAY"
 		ADJUST="video/x-raw,framerate=$RATE/1 ! videoconvert"
 		echo "x11"
-		shift
-	elif [ $1 == "rpi" ]; then
-		ENCODER="omxh264enc"
-		echo "rpi - WARNING cannot be LOSSLESS"
 		shift
 	elif [ $1 == "tcp" ]; then
 		echo "tcp - use it with SSH -L flag"
