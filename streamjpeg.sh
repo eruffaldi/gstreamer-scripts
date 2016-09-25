@@ -3,9 +3,10 @@
 # Stream JPEG over RTP
 #
 ENCODER="jpegenc"
-PACKER="rtpjpegpay pt=96"
+PACKER="rtpjpegpay config-interval=1 pt=96"
 DECODER="jpegdec"
 UNPACKER="application/x-rtp,payload=96 ! rtpjpegdepay"
+: ${RATE:="25"}
 
 ADJUST="video/x-raw,framerate=$RATE/1"
 
@@ -14,7 +15,6 @@ FINAL=autovideosink
 
 SINK=udpsink
 SOURCE=udpsrc
-: ${RATE:="25"}
 : ${TARGET:="127.0.0.1"}
 : ${PORT:="9078"}
 : ${CAPDISPLAY:=":0"}
