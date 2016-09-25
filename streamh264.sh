@@ -8,7 +8,6 @@
 # PRESET ultrafast
 # TUNE zerolatency
 #
-#NOTE: on rpi the x264enc becomes omxh264enc  
 CAP=videotestsrc
 ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
 SINK=udpsink
@@ -16,16 +15,17 @@ SOURCE=udpsrc
 : ${RATE:="25"}
 : ${TARGET:="127.0.0.1"}
 : ${PORT:="9078"}
+: ${CAPDISPLAY:=":0"}
 
 while [ 1 -eq 1 ]
 do 
 	if [ $1 == "x11" ]; then
-		CAP="ximagesrc use-damage=0"
+		CAP="ximagesrc use-damage=0 display-name=$CAPDISPLAY"
 		echo "x11"
 		shift
 	elif [ $1 == "rpi" ]; then
 		ENCODER="omxh264enc"
-		echo "rpi"
+		echo "rpi - WARNING cannot be LOSSLESS"
 		shift
 	elif [ $1 == "tcp" ]; then
 		echo "tcp - use it with SSH -L flag"
