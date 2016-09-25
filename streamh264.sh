@@ -11,13 +11,20 @@
 #NOTE: on rpi the x264enc becomes omxh264enc  
 CAP=videotestsrc
 ENCODER="x264enc pass=qual quantizer=0 ! video/x-h264,profile=high-4:4:4"
-
+SINK=udpsink
+SOURCE=udpsrc
 while [ 1 -eq 1 ]
 do 
 	if [ $1 == "x11" ]; then
 		CAP="ximagesrc use-damage=0"
+		echo "x11"
 	elif [ $1 == "rpi" ]; then
 		ENCODER="omxh264enc"
+		echo "rpi"
+	elif [ $1 == "tcp" ]; then
+		echo "tcp"
+		SINK=tcpserversink
+		SOURCE=tcpclientsrc
 	else
 		break
 	fi
@@ -31,7 +38,7 @@ DECODER="h264parse ! avdec_h264"
 UNPACKER="application/x-rtp ! rtph264depay"
 
 FINAL=autovideosink
-TARGET=127.0.0.1
+: ${TARGET:="127.0.0.1"}
 PORT=9078
 
 if [ $1 == 'cap' ]; then
@@ -43,12 +50,12 @@ if [ $1 == 'cap' ]; then
 		echo "Capture"
 		w="gst-launch-1.0 $CAP ! $ENCODER ! $PACKER ! $OUTPUT"
 	fi
-	w="gst-launch-1.0 $CAP ! $ADJUST ! $ENCODER ! $PACKER ! udpsink host=$TARGET port=$PORT"
+	w="gst-launch-1.0 $CAP ! $ADJUST ! $ENCODER ! $PACKER ! $SINK host=$TARGET port=$PORT"
 	echo $w
 	$w
 elif [ $1 == 'play' ]; then
 	echo "Playback"
-	w="gst-launch-1.0 udpsrc port=$PORT ! $UNPACKER ! $DECODER ! $FINAL"
+	w="gst-launch-1.0 $SOURCE port=$PORT ! $UNPACKER ! $DECODER ! $FINAL"
 	echo $w
 	$w
 else
